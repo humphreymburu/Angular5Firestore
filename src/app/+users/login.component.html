@@ -1,0 +1,82 @@
+<h1>Login</h1>
+<hr>
+<div fxLayout="row" fxLayoutAlign="center center">
+<mat-card fxFlex="66.66%">
+  
+<mat-card-header>
+<mat-card-title>Login</mat-card-title></mat-card-header>
+<mat-card-content>
+
+
+
+
+
+
+
+
+<form [formGroup]="loginForm"  *ngIf="newUser"  (ngSubmit)="signup()" autocomplete="off">
+<div>
+        <h3>New User Signup</h3>
+        <p (click)="toggleForm()">Already Registered?</p>
+        <hr>
+
+        <p>{{password}} </p>
+<mat-form-field>
+<input matInput formControlName="email" placeholder="Email" name="email" required class="form-control" required>
+<em *ngIf="formErrors.email"> {{ formErrors.email }} </em>
+</mat-form-field>
+
+<mat-form-field>
+<input matInput formControlName="password" placeholder="Password" name="password" required class="form-control">
+<em *ngIf="formErrors.password"> {{ formErrors.password }} </em>
+
+</mat-form-field>
+
+</div>
+<button type="submit" [disabled]="!loginForm.valid" mat-raised-button color="accent">Submit</button>
+</form>
+
+
+<form [formGroup]="loginForm"  *ngIf="!newUser"  (ngSubmit)="login()">
+        
+        <h3>Existing User Login</h3>
+          <p class="btn button is-small" (click)="toggleForm()">New User?</p>
+        <hr>
+        
+
+          <mat-form-field>
+                <input matInput type="email" id="email" class="input"
+                 formControlName="email" placeholder="Email" required>
+                 <em *ngIf="formErrors.email" class="help is-danger">
+                                {{ formErrors.email }}
+                              </em>
+          </mat-form-field>
+
+          <p>Name value: {{ loginForm.get('email').value }}</p>
+         
+           <mat-form-field>
+                <input matInput type="password" id="password" class="input"
+                        formControlName="password" placeholder="Password" required>
+               
+                 <em *ngIf="formErrors.password" class="help is-danger">
+                   {{ formErrors.password }}
+                 </em>
+           </mat-form-field>
+          
+          
+        
+          <button type="submit" class="button" [disabled]="!loginForm.valid" mat-raised-button color="accent">Submit</button>
+        
+          <span *ngIf="loginForm.valid" class="help is-success">Form Looks Valid</span>
+        
+          <button mat-raised-button color="accent" *ngIf="!passReset && loginForm.controls.email.valid" 
+          class="help is-info" (click)="resetPassword()">Reset Password for {{loginForm.value.email}}?</button>
+          <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
+        
+        </form>
+
+
+</mat-card-content>
+</mat-card>  
+          
+</div>

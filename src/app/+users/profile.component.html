@@ -1,0 +1,42 @@
+<h1>Edit Your Profile</h1>
+    <hr>
+
+<div fxLayout="row" fxLayoutAlign="start center">
+       
+        <div fxFlex="33.33%" fxFlexAlign="start" class="login"> 
+            
+            
+            <mat-card>
+
+<mat-card-content>
+
+     
+
+     
+<form [formGroup]="profileForm" (ngSubmit)="saveProfile(profileForm.value)" autocomplete="off" novalidate>
+<div>
+<mat-form-field>
+
+ <input matInput formControlName="firstName"  id="firstName" type="text" class="form-control" placeholder="First Name..." />
+ <mat-error *ngIf="firstName.hasError('required')">
+      Name <strong>required</strong>
+    </mat-error>
+ <mat-error *ngIf="firstName.hasError('pattern')">Letters Required</mat-error>
+</mat-form-field>
+
+<mat-form-field>
+<input matInput formControlName="lastName" id="lastName" type="text" class="form-control" placeholder="Last Name..." />
+  <mat-error *ngIf="lastName.hasError('required')">
+      Name <strong>required</strong>
+    </mat-error>
+ <mat-error *ngIf="lastName.hasError('pattern')">Letters Required</mat-error>
+</mat-form-field>
+</div>
+
+<button mat-raised-button color="primary" type="submit">Save</button>
+<button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+</form>
+</mat-card-content>
+</mat-card> 
+</div>
+</div>

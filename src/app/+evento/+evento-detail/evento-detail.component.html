@@ -1,0 +1,45 @@
+<mat-card>
+   <p>test</p>
+  <img [src]="event?.imageUrl" [alt]="event?.name" class="event-img">
+  <div><span>id: </span>{{event?.id}}</div>
+  <div class="row">
+    <div class="col-md-11">
+      <h2>{{event?.name}} </h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div><strong>Start Date:</strong> {{event?.startDate | date}}</div>
+      <div><strong>End Date:</strong> {{event?.endDate | date}}</div>
+      <div><strong>Time:</strong> {{event?.time}}</div>
+       <div><strong>Place:</strong> {{event?.places}}</div>
+      <div><strong>Price:</strong> ${{event?.price}}</div>
+    </div>
+    <div class="col-md-6">
+      <address>
+        <strong>Address:</strong><br />
+        {{event?.location?.address}}<br />
+        {{event?.location?.city}}, {{event?.location?.country}}
+      </address>
+    </div>
+  </div>
+  <hr>
+  
+  <div class="button-row">
+  <button mat-button label="All" [class.active]="filterBy==='all'" (click)="filterBy='all'" color="accent">all
+  </button>
+  <button  mat-button label="Intermediate" [class.active]="filterBy==='intermediate'" (click)="filterBy = 'intermediate'">intermediate
+  </button>
+  <button  mat-button label="Advanced" [class.active]="filterBy==='advanced'" (click)="filterBy = 'advanced'">advanced
+  </button>
+  <button  mat-button label="Beginner" [class.active]="filterBy==='beginner'" (click)="filterBy = 'beginner'">beginner
+  </button>
+
+
+
+</div>
+
+<session-list [filterBy] = "filterBy" [sessions] = "event?.sessions"></session-list>
+  
+ </mat-card>

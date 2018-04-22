@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 @Injectable()
 export class Title {
@@ -7,12 +8,18 @@ export class Title {
   public value = 'Angular 2';
 
   constructor(
-    public http: HttpClient
-  ) { }
+    public http: HttpClientModule
+  ) {}
 
   public getData() {
     console.log('Title#getData(): Get Data');
-    return this.http.get('/assets/data.json');
+    /**
+     * return this.http.get('/assets/data.json')
+     * .map(res => res.json());
+     */
+    return {
+      value: 'AngularClass'
+    };
   }
 
 }

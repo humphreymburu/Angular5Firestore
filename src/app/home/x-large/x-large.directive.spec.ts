@@ -1,15 +1,13 @@
-import { By } from '@angular/platform-browser';
 import {
-  inject,
   fakeAsync,
+  inject,
   tick,
-  async,
-  TestBed,
-  ComponentFixture,
-  getTestBed
+  TestBed
 } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { BaseRequestOptions, Http } from '@angular/http';
+import { By } from '@angular/platform-browser';
+import { MockBackend } from '@angular/http/testing';
 
 /**
  * Load the implementations that should be tested.

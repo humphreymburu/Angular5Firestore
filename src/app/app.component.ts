@@ -1,9 +1,23 @@
 /**
  * Angular 2 decorators and services
  */
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { environment } from 'environments/environment';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  Inject,
+  Input
+} from '@angular/core';
+
+
 import { AppState } from './app.service';
+import { AuthService } from './+users/auth.service';
+import { EventoService } from './+evento/evento-service';
+import { ISession } from './+evento/shared/evento-model';
+import * as firebase from 'firebase/app';
+//import { SimpleDialogComponent } from './common/simple-modal.component';
+
+
 
 /**
  * App Component
@@ -13,62 +27,46 @@ import { AppState } from './app.service';
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
-    './app.component.css'
+    './app.component.scss'
   ],
-  template: `
-    <nav>
-      <a [routerLink]=" ['./'] "
-        routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        Index
-      </a>
-      <a [routerLink]=" ['./home'] "
-        routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        Home
-      </a>
-      <a [routerLink]=" ['./detail'] "
-        routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        Detail
-      </a>
-      <a [routerLink]=" ['./barrel'] "
-        routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        Barrel
-      </a>
-      <a [routerLink]=" ['./about'] "
-        routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        About
-      </a>
-      <a *ngIf="showDevModule" [routerLink]=" ['./dev-module'] "
-         routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        DevModule
-      </a>
-    </nav>
 
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-
-    <pre class="app-state">this.appState.state = {{ appState.state | json }}</pre>
-
-    <footer>
-      <span>Angular Starter by <a [href]="twitter">@gdi2290</a></span>
-      <div>
-        <a [href]="url">
-          <img [src]="tipe" width="25%">
-        </a>
-      </div>
-    </footer>
-  `
+  templateUrl:'app.component.html'
 })
 export class AppComponent implements OnInit {
-  public name = 'Angular Starter';
-  public tipe = 'assets/img/tipe.png';
-  public twitter = 'https://twitter.com/gdi2290';
-  public url = 'https://tipe.io';
-  public showDevModule: boolean = environment.showDevModule;
+  public angularclassLogo = 'assets/img/angularclass-avatar.png';
+  public name = 'Eventa App';
+  public url = '';
+  public found: string;
 
-  constructor(
-    public appState: AppState
-  ) {}
+  public searchTerm: string = "";
+  foundSessions: ISession[];
+  public test: boolean;
+
+  
+
+
+  constructor(public appState: AppState, private auth: AuthService, private eventoServ: EventoService) {}
+
+  isAuth() {
+    return this.auth.currentUser;
+  }
+
+
+
+  searchSessions(searchTerm) {
+      this.eventoServ.searchSessions(searchTerm).subscribe
+      (sessions => { 
+       this.foundSessions = sessions
+        console.log(this.foundSessions);
+      })
+
+      return  this.foundSessions;
+  }
+
+
+  
+
+
 
   public ngOnInit() {
     console.log('Initial App State', this.appState.state);
@@ -76,10 +74,3 @@ export class AppComponent implements OnInit {
 
 }
 
-/**
- * Please review the https://github.com/AngularClass/angular-examples/ repo for
- * more angular app examples that you may copy/paste
- * (The examples may not be updated as quickly. Please open an issue on github for us to update it)
- * For help or questions please contact us at @AngularClass on twitter
- * or our chat on Slack at https://AngularClass.com/slack-join
- */
