@@ -1,6 +1,6 @@
 import {
   Component,
-  OnInit,ViewChild 
+  OnInit, Input, ViewChild 
 } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
  */
 
 import { EventoService } from './evento-service';
-
+import { IEvento, ISession } from './shared/evento-model';
 
 console.log('`Create` component loaded asynchronously');
 
@@ -28,14 +28,18 @@ export class CreateComponent implements OnInit {
 isDirty:Boolean = true;
  eventForm: FormGroup;
 
+store: any; 
+
+ @Input() event: IEvento;
+
+
  @ViewChild(FormGroupDirective) 
 formGroupDirective: FormGroupDirective;
 
    constructor(private eventService: EventoService, private fb: FormBuilder, private route: Router) {}
 
 
-    ngOnInit() {
-        
+    ngOnInit() { 
         this.eventForm = this.fb.group({
 
          name: ['', Validators.compose([Validators.required, Validators.maxLength(75), Validators.pattern('[a-zA-Z].*')]) ],
@@ -49,22 +53,22 @@ formGroupDirective: FormGroupDirective;
          price: ['', Validators.compose([Validators.maxLength(6), Validators.pattern('^[0-9]{1,7}$')])],
          imageUrl: ['', Validators.compose([Validators.required, Validators.pattern('^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$')])
          ]
-       })
+       })       
+    }
 
 
-
-       
-       }
-
-
-   saveProfile(formValues){
+   saveProfile(formValues){ 
    if(this.eventForm.valid) {
-      this.eventService.updateEvento(formValues);
-      console.log(formValues);
+      this.eventService.add(formValues);
+      console.log("test values", formValues);
       console.log(this.eventForm);
       //this.route.navigate(['eventos']);
       this.resetEverything();
    }
+
+
+ 
+
 
  }
 

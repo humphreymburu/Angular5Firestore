@@ -1,9 +1,10 @@
+import { Timestamp } from 'rxjs';
 
 
 
 
 export interface IEvento {
-    id?: number,
+    id?: number | string,
     name: string,
     startDate: Date,
     endDate: Date,
@@ -15,7 +16,9 @@ export interface IEvento {
         address: string,
         city: string,
         country?: string
-    }
+    },
+    updatedAt?: any,
+    createdAt?: any
     //onlineUrl?: string,
     //sessions: ISession[]
 }

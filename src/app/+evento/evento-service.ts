@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, Input, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/RX';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -9,11 +9,6 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-//import { AngularFireModule } from 'angularfire2';
-//import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-
-
-
 @Injectable()
 export class EventoService {
  
@@ -21,20 +16,55 @@ export class EventoService {
   eventoUrl: number | string;
   ext: string = ".json";
 
+
   private eventsCollection: AngularFirestoreCollection<IEvento>;
   events: Observable<IEvento[]>;
+  //private afsss: AngularFirestoreDocument<Event>;
+
+
+    
+  
+  constructor(afs: AngularFirestore, http: HttpClient ) {
+    this.eventsCollection = afs.collection<IEvento>('Events');
+    //this.events = this.eventsCollection.valueChanges();
+    
+    this.events = this.eventsCollection.snapshotChanges().map(actions => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as IEvento;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      });
+    });
  
-  constructor(afs: AngularFirestore, http: HttpClient) {
-    this.eventsCollection = afs.collection('Events');
-    this.events = this.eventsCollection.valueChanges();
+
+
+  }
+
+  get timestamp() {
+    return firebase.firestore.FieldValue.serverTimestamp()
+  }
+
+  add(data: IEvento) {
+    const timestamp = this.timestamp
+    console.log("data", data);
+    return this.eventsCollection.add({
+      ...data,
+      updatedAt: timestamp,
+      createdAt: timestamp
+    })
   }
 
 
-  getEventos():Observable<IEvento[]> {
+  getEventos() {
     return this.events;
   }
 
+
   
+
+
+
+
 
 
   getEvent() {
@@ -68,11 +98,20 @@ export class EventoService {
   }
 
 
-  updateEvento(event) {
-       event.id = 999
-       event.session = []
+  //updateEvento(event) {
+       //event.id = 999
+       //event.session = []
        //EVENTS.push(event)
+ // }
+
+  updateEvento(event: IEvento) {
+
   }
+
+  
+  
+
+
   
    searchSessions(searchTerm: string) {
      var term = searchTerm.toLocaleLowerCase();
