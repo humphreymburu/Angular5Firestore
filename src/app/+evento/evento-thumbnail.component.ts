@@ -13,24 +13,9 @@ import { IEvento, ISession } from './shared/evento-model';
     <h2 class="title2"> {{event?.name }}</h2>
     <div><strong>Start Date:</strong> {{event?.startDate | date }}</div>  
     <div><strong>End Date: </strong>{{event?.endDate | date }}</div>
-    <div [ngClass]="getStartTimeClass()" [ngSwitch] = "event?.time">
-   <strong> Time:</strong> {{event?.time}}
-    <span *ngSwitchCase="'8:00 am'">, Earley Start</span>
-    <span *ngSwitchCase="'10:00 am'">, Late Start</span>
-    <span *ngSwitchDafault> (normal-start)</span>
-
-    </div>
     <div><strong>Price:</strong> \Ksh {{event?.price }}</div>
     <div><strong>Place:</strong> {{event?.places}}</div>
-    <div *ngIf = event?.location>
-    <span><strong>Location:</strong>{{event?.location?.address}}</span>
-    <span class="pad-left">&nbsp;</span>
-    <span>{{event?.location?.city}}, 
-    {{event?.location?.country}}</span>
-    </div>
-    <div *ngIf = event?.onlineUrl>
-    <strong>Online URL:</strong> {{event?.onlineUrl}}
-    </div>
+    <div>{{event?.id }} </div>
     </div>
     </mat-card>
     `,

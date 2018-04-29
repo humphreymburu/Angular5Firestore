@@ -3,7 +3,9 @@ import {
   OnInit,
   Input
 } from '@angular/core';
-
+import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Observable';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { IEvento, ISession } from '../shared/evento-model';
 import { EventoService } from "../evento-service";
@@ -27,28 +29,25 @@ console.log('`EventoDetail` component loaded asynchronously');
 export class EventoDetailComponent implements OnInit {
   //event:IEvento;
 
-  @Input() event: IEvento;
+  event: Observable<IEvento>;
+  //event$: any;
+  private selectedId: number;
+  
 
    filterBy: string ='all';
     constructor(
         private eventService: EventoService, 
         private router: Router, 
-        private route: ActivatedRoute) {}
+        private route: ActivatedRoute,
+        private db: AngularFirestore) {}
     
- ngOnInit(): void {
-     //this.route.params.forEach((params:Params)=> {
-       //this.event = this.eventService.getEvent(+params['id']);
-    // })
-//this.getEvent();   
-console.log("test eventt", this.getEvent());
-    };
+        ngOnInit() {
+            this.event = this.route.params
+			.switchMap(param => this.eventService.getEvent(param.id));
+          }
 
-    getEvent(){
-        //const id = +this.route.snapshot.paramMap.get('id');
-       //return this.eventService.getEvent(id)
-         // .subscribe(event => this.event = event);
-      }
+    
 
-
+          
 
 }

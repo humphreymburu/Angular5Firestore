@@ -1,4 +1,4 @@
-import { Injectable, Input, EventEmitter } from '@angular/core';
+import { Injectable, Input, EventEmitter, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/RX';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @Injectable()
-export class EventoService {
+export class EventoService implements OnInit {
  
   id: number | string;
   eventoUrl: number | string;
@@ -19,15 +19,11 @@ export class EventoService {
 
   private eventsCollection: AngularFirestoreCollection<IEvento>;
   events: Observable<IEvento[]>;
-  //private afsss: AngularFirestoreDocument<Event>;
-
-
-    
   
-  constructor(afs: AngularFirestore, http: HttpClient ) {
+  constructor(private afs: AngularFirestore, http: HttpClient ) {
     this.eventsCollection = afs.collection<IEvento>('Events');
     //this.events = this.eventsCollection.valueChanges();
-    
+
     this.events = this.eventsCollection.snapshotChanges().map(actions => {
       return actions.map(a => {
         const data = a.payload.doc.data() as IEvento;
@@ -35,9 +31,10 @@ export class EventoService {
         return { id, ...data };
       });
     });
- 
 
+  }
 
+  ngOnInit() {
   }
 
   get timestamp() {
@@ -52,29 +49,25 @@ export class EventoService {
       updatedAt: timestamp,
       createdAt: timestamp
     })
+    .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
   }
 
-
   getEventos() {
+    
     return this.events;
   }
 
-
-  
-
-
-
-
-
-
-  getEvent() {
-  // this.eventoUrl = "https://tukio-1cb4e.firebaseio.com/Events/" + id + "/" + this.ext;
-   //const url = `${this.eventoUrl}`;
-    //return this.http.get<IEvento>(url).pipe(
-      //tap(_ => this.log(`fetched event id=${id}`)),
-      //catchError(this.handleError<IEvento>(`getEvent id=${id}`))
-    //);
+  getEvent(id: string) {
+    return this.afs.doc(`Events/${id}`).snapshotChanges().map(snap => {
+      const data = snap.payload.data() as IEvento;
+      const id = snap.payload.id;
+      return { id, ...data };
+    });
   }
+
+
 
 
 

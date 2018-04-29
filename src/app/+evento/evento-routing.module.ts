@@ -15,7 +15,7 @@ import {  EventoModule } from './evento.module';
 
 const EventoRoutes: Routes = [
   {  path: 'eventos', redirectTo: '/eventos' },
-  //{  path: 'evento/:id', redirectTo: '/evento/:id' },
+  {  path: 'evento/:id', redirectTo: '/evento/:id' },
   {  path: 'eventos',  component: EventoComponent },
   {  path: 'evento/:id', component: EventoDetailComponent, 
    canActivate:[EventoRouteActivator] },

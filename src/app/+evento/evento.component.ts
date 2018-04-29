@@ -49,6 +49,7 @@ export class EventoComponent implements OnInit {
 //events: IEvento;
 eventos: IEvento[];
 
+
    constructor(private eventService: EventoService, private route: ActivatedRoute) {
 
    }
@@ -57,13 +58,11 @@ eventos: IEvento[];
      //this.eventService.getEvents().subscribe(events => {this.events = events});
     // this.events = this.route.snapshot.data['events'];
      this.getEventos();
-
-     console.log("test", this.eventos);
    }
 
 
    getEventos(): void {
-    this.eventService.getEventos()
+    this.eventService.events
     .subscribe(eventos => this.eventos = eventos);
   }
 

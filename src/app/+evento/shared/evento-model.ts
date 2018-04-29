@@ -5,7 +5,7 @@ import { Timestamp } from 'rxjs';
 
 export interface IEvento {
     id?: number | string,
-    name: string,
+    name?: string,
     startDate: Date,
     endDate: Date,
     time?: string,
