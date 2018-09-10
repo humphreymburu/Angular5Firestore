@@ -19,12 +19,14 @@ import * as firebase from 'firebase/app';
 
 
 
+export const ROOT_SELECTOR = 'app';
+
 /**
  * App Component
  * Top Level Component
  */
 @Component({
-  selector: 'app',
+  selector: ROOT_SELECTOR,
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
     './app.component.scss'

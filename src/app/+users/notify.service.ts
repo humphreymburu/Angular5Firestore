@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
+import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 
 /// Notify users about errors and other helpful stuff
 export interface Msg {

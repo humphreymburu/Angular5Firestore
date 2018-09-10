@@ -3,9 +3,15 @@ import {
   OnInit,
   Input
 } from '@angular/core';
-import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Observable';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+//import 'rxjs/add/operator/switchMap';
+//import { Observable } from 'rxjs/Observable';
+
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
+import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
+
+//import {forkJoin} from 'rxjs'; 
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { IEvento, ISession } from '../shared/evento-model';
 import { EventoService } from "../evento-service";
@@ -42,9 +48,13 @@ export class EventoDetailComponent implements OnInit {
         private db: AngularFirestore) {}
     
         ngOnInit() {
-            this.event = this.route.params
-			.switchMap(param => this.eventService.getEvent(param.id));
-          }
+           
+           this.route.paramMap
+                .pipe(
+                    switchMap((params: ParamMap) => 
+                    this.eventService.getEvent(params.get('id')))
+                )
+        }
 
     
 

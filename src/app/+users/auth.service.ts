@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser } from './user.model';
 import * as firebase from 'firebase/app';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+import { FirebaseApp, FirebaseOptionsToken, AngularFireModule, FirebaseNameOrConfigToken } from '@angular/fire';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Observable, of as observableOf, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NotifyService } from './notify.service';
 
@@ -25,13 +26,16 @@ export class AuthService {
       private notify: NotifyService) {
 
       this.user = this.afAuth.authState
-        .switchMap((user) => {
-          if (user) {
-              return this.afs.doc<IUser>(`users/${user.uid}`).valueChanges();
-                } else {
-                  return Observable.of(null);
-                }
-            });
+        .pipe(
+          switchMap((user) => {
+            if (user) {
+                return this.afs.doc<IUser>(`users/${user.uid}`).valueChanges();
+                  } else {
+                    return observableOf(null);
+                  }
+              })
+        )
+        
       }
 
 
@@ -70,7 +74,7 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
     .then((user) => {
       this.notify.update('Welcome to Firestarter!!!', 'success')
-      return this.updateUserData(user); // if using firestore
+      //return this.updateUserData(user); // if using firestore
     })
       .catch(error => console.log(error));
   }
@@ -79,7 +83,7 @@ export class AuthService {
      return this.afAuth.auth.signInWithEmailAndPassword(email, password)
        .then((user) => {
         this.notify.update('Welcome to Tukio', 'success')
-        return this.updateUserData(user); // if using firestore
+        return this.updateUserData(this.currentUser); // if using firestore
        })
        .catch(error => console.log(error));
   }

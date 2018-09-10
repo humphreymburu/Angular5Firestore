@@ -1,13 +1,16 @@
 import { Injectable, Input, EventEmitter, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/RX';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
+//import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
+
+//import {forkJoin} from 'rxjs'; 
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+//import { Subject } from 'rxjs/RX';
+//import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 import { IEvento, ISession } from './shared/evento-model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @Injectable()
 export class EventoService implements OnInit {
@@ -23,15 +26,17 @@ export class EventoService implements OnInit {
   constructor(private afs: AngularFirestore, http: HttpClient ) {
     this.eventsCollection = afs.collection<IEvento>('Events');
     //this.events = this.eventsCollection.valueChanges();
-
-    this.events = this.eventsCollection.snapshotChanges().map(actions => {
-      return actions.map(a => {
-        const data = a.payload.doc.data() as IEvento;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      });
-    });
-
+    this.events = this.eventsCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as IEvento;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    )
+    
+    
   }
 
   ngOnInit() {
@@ -55,16 +60,19 @@ export class EventoService implements OnInit {
   }
 
   getEventos() {
-    
     return this.events;
   }
 
   getEvent(id: string) {
-    return this.afs.doc(`Events/${id}`).snapshotChanges().map(snap => {
-      const data = snap.payload.data() as IEvento;
-      const id = snap.payload.id;
-      return { id, ...data };
-    });
+    return this.afs.doc(`Events/${id}`).snapshotChanges().pipe(
+      map(snap => {
+        const data = snap.payload.data() as IEvento;
+        const id = snap.payload.id;
+        return { id, ...data };
+      })
+    )
+    
+    
   }
 
 
@@ -76,7 +84,6 @@ export class EventoService implements OnInit {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-
       // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.message}`);
 
@@ -96,7 +103,6 @@ export class EventoService implements OnInit {
        //event.session = []
        //EVENTS.push(event)
  // }
-
   updateEvento(event: IEvento) {
 
   }
@@ -133,4 +139,3 @@ export class EventoService implements OnInit {
 
 
 }
-
