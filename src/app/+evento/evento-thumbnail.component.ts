@@ -11,7 +11,7 @@ import { IEvento, ISession } from './shared/evento-model';
     <mat-card class="mag" fxFlex="0 0 97%">
     <div [routerLink] ="['/evento', event.id]">
     <h2 class="title2"> {{event?.name }}</h2>
-    <div><strong>Start Date:</strong> {{event?.startDate | date }}</div>  
+    <div><strong>Start Date:</strong> {{event?.startDate | date:'fullDate' }}</div>  
     <div><strong>End Date: </strong>{{event?.endDate | date }}</div>
     <div><strong>Price:</strong> \Ksh {{event?.price }}</div>
     <div><strong>Place:</strong> {{event?.places}}</div>

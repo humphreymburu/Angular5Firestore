@@ -24,7 +24,7 @@ import { CollapsibleWellComponent } from './common/collapsible-well.component';
 import { DurationPipe } from './shared/duration.pipe';
 import { UpVoteComponent }  from './+evento-detail/upvote.component';
 import { VoterService }  from '../+evento/+evento-detail/voter.services';
-import { AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
 console.log('`Event and Detail` bundle loaded asynchronously');
 
@@ -63,3 +63,6 @@ console.log('`Event and Detail` bundle loaded asynchronously');
 
 export class EventoModule {
 }
+
+
+

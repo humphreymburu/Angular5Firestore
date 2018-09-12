@@ -15,7 +15,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 @Injectable()
 export class EventoService implements OnInit {
  
-  id: number | string;
+  id: string;
   eventoUrl: number | string;
   ext: string = ".json";
 
@@ -26,6 +26,8 @@ export class EventoService implements OnInit {
   constructor(private afs: AngularFirestore, http: HttpClient ) {
     this.eventsCollection = afs.collection<IEvento>('Events');
     //this.events = this.eventsCollection.valueChanges();
+    
+
     this.events = this.eventsCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -35,6 +37,8 @@ export class EventoService implements OnInit {
         });
       })
     )
+
+    console.log(this.events);
     
     
   }
@@ -61,22 +65,19 @@ export class EventoService implements OnInit {
 
   getEventos() {
     return this.events;
+    console.log(this.events)
   }
+
 
   getEvent(id: string) {
     return this.afs.doc(`Events/${id}`).snapshotChanges().pipe(
       map(snap => {
-        const data = snap.payload.data() as IEvento;
-        const id = snap.payload.id;
-        return { id, ...data };
-      })
-    )
-    
+      const data = snap.payload.data() as IEvento;
+      const id = snap.payload.id;
+      return { id, ...data };
+    }))
     
   }
-
-
-
 
 
   private handleError<T> (operation = 'operation', result?: T) {

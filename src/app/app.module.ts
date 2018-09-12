@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreService } from '../fire.service';
 
 
@@ -173,8 +173,14 @@ export class AppModule {
 
   constructor(
     public appRef: ApplicationRef,
-    public appState: AppState
-  ) {}
+    public appState: AppState,
+    private afs: AngularFirestore
+  ) {
+    afs.firestore.settings({
+      timestampsInSnapshots: false,
+    });
+    afs.firestore.enablePersistence();
+  }
 
   public hmrOnInit(store: StoreType) {
     if (!store || !store.state) {

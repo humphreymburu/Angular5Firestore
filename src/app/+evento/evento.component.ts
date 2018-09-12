@@ -25,7 +25,7 @@ console.log('`Evento` component loaded asynchronously');
   </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxLayoutWrap class="wrapper">
-  <evento-thumbnail *ngFor="let event of eventos" [event] = "event"></evento-thumbnail>
+  <evento-thumbnail *ngFor="let event of eventos | slice:0:3" [event] = "event"></evento-thumbnail>
   </div>
   `,
   styles: [`

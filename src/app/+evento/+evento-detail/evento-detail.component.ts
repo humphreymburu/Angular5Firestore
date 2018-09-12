@@ -38,6 +38,7 @@ export class EventoDetailComponent implements OnInit {
   event: Observable<IEvento>;
   //event$: any;
   private selectedId: number;
+  id : string;
   
 
    filterBy: string ='all';
@@ -48,14 +49,14 @@ export class EventoDetailComponent implements OnInit {
         private db: AngularFirestore) {}
     
         ngOnInit() {
-           
-           this.route.paramMap
-                .pipe(
-                    switchMap((params: ParamMap) => 
-                    this.eventService.getEvent(params.get('id')))
-                )
+                this.id = this.route.snapshot.params['id'];
+                console.log(this.id);
+                this.event = this.eventService.getEvent(this.id);
         }
+        
 
+            
+        
     
 
           
