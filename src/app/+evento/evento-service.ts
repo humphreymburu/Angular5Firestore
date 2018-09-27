@@ -3,7 +3,8 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 //import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 
 //import {forkJoin} from 'rxjs'; 
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+
 //import { Subject } from 'rxjs/RX';
 //import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -15,19 +16,23 @@ import { AngularFireAuth } from 'angularfire2/auth';
 @Injectable()
 export class EventoService implements OnInit {
  
-  id: string;
+  id: string | number;
   eventoUrl: number | string;
   ext: string = ".json";
 
 
+
   private eventsCollection: AngularFirestoreCollection<IEvento>;
+  private eventDoc: AngularFirestoreDocument<IEvento>;
   events: Observable<IEvento[]>;
+  event:  Observable<any>;
+  
   
   constructor(private afs: AngularFirestore, http: HttpClient ) {
     this.eventsCollection = afs.collection<IEvento>('Events');
     //this.events = this.eventsCollection.valueChanges();
+  
     
-
     this.events = this.eventsCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -63,10 +68,23 @@ export class EventoService implements OnInit {
     })
   }
 
-  getEventos() {
+
+  deleteEvent(event: IEvento) {
+    this.eventDoc = this.afs.doc(`Event/${event.id}`);
+    this.eventDoc.delete();
+  }
+
+
+  getEvents() {
     return this.events;
     console.log(this.events)
   }
+
+
+  updateEvent(event: IEvento){
+    this.eventDoc = this.afs.doc(`Events/${event.id}`);
+    this.eventDoc.update(event);
+   }
 
 
   getEvent(id: string) {
@@ -78,6 +96,10 @@ export class EventoService implements OnInit {
     }))
     
   }
+
+   
+
+
 
 
   private handleError<T> (operation = 'operation', result?: T) {
@@ -98,18 +120,6 @@ export class EventoService implements OnInit {
     //this.messageService.add('HeroService: ' + message);
   }
 
-
-  //updateEvento(event) {
-       //event.id = 999
-       //event.session = []
-       //EVENTS.push(event)
- // }
-  updateEvento(event: IEvento) {
-
-  }
-
-  
-  
 
 
   

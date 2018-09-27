@@ -66,12 +66,56 @@ export class AppComponent implements OnInit {
   }
 
 
-  
-
-
-
   public ngOnInit() {
     console.log('Initial App State', this.appState.state);
+
+    let getLocation = () => {
+      if (typeof navigator !== "undefined" && typeof navigator.geolocation !== "undefined") {
+        console.log("Asking user to get their location");
+        navigator.geolocation.getCurrentPosition(geolocationCallback, errorHandler);
+      } else {
+        console.log("Your browser does not support the HTML5 Geolocation API, so this demo will not work.")
+      }
+    };
+  
+    /* Callback method from the geolocation API which receives the current user's location */
+  let geolocationCallback = function(location: any) {
+    let latitude = location.coords.latitude;
+    let longitude = location.coords.longitude;
+    console.log("Retrieved user's location: [" + latitude + ", " + longitude + "]");
+
+    //var username = "wesley";
+   // geoFire.set(username, [latitude, longitude]).then(function() {
+      //console.log("Current user " + username + "'s location has been added to GeoFire");
+
+      // When the user disconnects from Firebase (e.g. closes the app, exits the browser),
+      // remove their GeoFire entry
+      //firebaseRef.child(username).onDisconnect().remove();
+
+      //log("Added handler to remove user " + username + " from GeoFire when you leave this page.");
+    //}).catch(function(error) {
+      //log("Error adding user " + username + "'s location to GeoFire");
+    //});
+  }
+
+
+
+    /* Handles any errors from trying to get the user's current location */
+    let errorHandler = (error) => {
+      if (error.code == 1) {
+        console.log("Error: PERMISSION_DENIED: User denied access to their location");
+      } else if (error.code === 2) {
+        console.log("Error: POSITION_UNAVAILABLE: Network is down or positioning satellites cannot be reached");
+      } else if (error.code === 3) {
+        console.log("Error: TIMEOUT: Calculating the user's location too took long");
+      } else {
+        console.log("Unexpected error code")
+      }
+    };
+  
+    // Get the current user's location
+    getLocation();
+  
   }
 
 }

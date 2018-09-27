@@ -17,6 +17,7 @@ import { IEvento, ISession } from './shared/evento-model';
     <div><strong>Place:</strong> {{event?.places}}</div>
     <div>{{event?.id }} </div>
     </div>
+    <button [routerLink] ="['/edit', event.id]">Edit</button> 
     </mat-card>
     `,
     styles: [` 

@@ -11,6 +11,7 @@ import { MatDatepickerModule} from '@angular/material';
 import { MatTabsModule } from '@angular/material';
 
 import { EventoComponent } from './evento.component';
+import { UpdateComponent } from './update-event.component';
 import { EventoThumbnailComponent  }  from './evento-thumbnail.component';
 import { EventoService } from './evento-service';
 import { EventoRoutingModule } from './evento-routing.module';
@@ -40,7 +41,8 @@ console.log('`Event and Detail` bundle loaded asynchronously');
     CollapsibleWellComponent,
     SessionListComponent,
     DurationPipe,
-    UpVoteComponent
+    UpVoteComponent,
+    UpdateComponent
   ],
   imports: [
     CommonModule,

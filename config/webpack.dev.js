@@ -127,17 +127,28 @@ module.exports = function(options) {
       public: METADATA.PUBLIC,
       historyApiFallback: true,
       watchOptions: {
-        // if you're using Docker you may need this
+        // if you're using Docker you may need thi
         // aggregateTimeout: 300,
         // poll: 1000,
         ignored: /node_modules/
+      },
+      /**
+       * Use stats to turn off verbose output
+       */
+      stats: {
+        /**
+         * Filter warnings to be shown
+         *
+         * See: https://github.com/angular/angular/issues/21560
+         */
+        warningsFilter: /System.import/,
       },
       /**
        * Here you can access the Express app object and add your own custom middleware to it.
        *
        * See: https://webpack.js.org/configuration/dev-server/
        */
-      setup: function(app) {
+      before: function(app) {
         // For example, to define custom handlers for some paths:
         // app.get('/some/path', function(req, res) {
         //   res.json({ custom: 'response' });
