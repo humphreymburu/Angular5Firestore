@@ -44,10 +44,6 @@ formGroupDirective: FormGroupDirective;
 
          name: ['', Validators.compose([Validators.required, Validators.maxLength(75), Validators.pattern('[a-zA-Z].*')]) ],
          places: ['', Validators.compose([Validators.required, Validators.maxLength(75), Validators.pattern('[a-zA-Z].*')]) ],
-         location:  this.fb.group({
-         city:['', Validators.compose([Validators.required, Validators.maxLength(55), Validators.pattern('[a-zA-Z].*')]) ],
-         address: ['', Validators.compose([Validators.required, Validators.maxLength(175), Validators.pattern('[a-zA-Z].*')]) ]
-         }),
          startDate:['', Validators.compose([Validators.required]) ],
          endDate:['', Validators.compose([Validators.required]) ],
          price: ['', Validators.compose([Validators.maxLength(6), Validators.pattern('^[0-9]{1,7}$')])],

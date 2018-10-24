@@ -1,4 +1,4 @@
-import { Injectable, Input, EventEmitter, OnInit } from '@angular/core';
+import { Injectable, Input, EventEmitter, NgZone } from '@angular/core';
 import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 //import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 
@@ -12,9 +12,13 @@ import { IEvento, ISession } from './shared/evento-model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { GoogleMapsAPIWrapper } from '@agm/core';
+import { MapsAPILoader } from '@agm/core';
+
+declare var google: any;
 
 @Injectable()
-export class EventoService implements OnInit {
+export class EventoService {
  
   id: string | number;
   eventoUrl: number | string;
@@ -28,27 +32,10 @@ export class EventoService implements OnInit {
   event:  Observable<any>;
   
   
-  constructor(private afs: AngularFirestore, http: HttpClient ) {
-    this.eventsCollection = afs.collection<IEvento>('Events');
+  constructor(private afs: AngularFirestore, http: HttpClient, private loader: MapsAPILoader, zone: NgZone ) {
+    this.eventsCollection = afs.collection<IEvento>('Events', ref => ref.orderBy('startDate', 'desc'));
     //this.events = this.eventsCollection.valueChanges();
-  
     
-    this.events = this.eventsCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data() as IEvento;
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      })
-    )
-
-    console.log(this.events);
-    
-    
-  }
-
-  ngOnInit() {
   }
 
   get timestamp() {
@@ -67,6 +54,23 @@ export class EventoService implements OnInit {
       console.log("Document written with ID: ", docRef.id);
     })
   }
+
+
+  getData(): Observable<any[]> {
+    // ['added', 'modified', 'removed']
+    return this.eventsCollection.snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
+  }
+
+
+
+
 
 
   deleteEvent(event: IEvento) {

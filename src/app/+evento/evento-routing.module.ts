@@ -15,10 +15,10 @@ import { UpdateComponent } from './update-event.component';
 
 
 const EventoRoutes: Routes = [
-  {  path: 'eventos', redirectTo: '/eventos' },
   {  path: 'evento/:id', redirectTo: '/evento/:id' },
   {  path: 'edit/:id', redirectTo: '/edit/:id' },
   {  path: 'eventos',  component: EventoComponent },
+  {  path: 'eventos', redirectTo: '/eventos' },
   {  path: 'evento/:id', component: EventoDetailComponent, 
    canActivate:[EventoRouteActivator] },
   {  path: 'create', redirectTo: '/create' },

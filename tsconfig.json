@@ -27,7 +27,8 @@
       "jasmine",
       "node",
       "uglify-js",
-      "webpack"
+      "webpack",
+      "googlemaps"
     ]
   },
   "exclude": [

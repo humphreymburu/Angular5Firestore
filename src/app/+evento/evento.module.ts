@@ -27,6 +27,7 @@ import { UpVoteComponent }  from './+evento-detail/upvote.component';
 import { VoterService }  from '../+evento/+evento-detail/voter.services';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
+
 console.log('`Event and Detail` bundle loaded asynchronously');
 
 @NgModule({

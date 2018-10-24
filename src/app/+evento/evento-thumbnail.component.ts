@@ -7,17 +7,14 @@ import { IEvento, ISession } from './shared/evento-model';
 @Component({
     selector: 'evento-thumbnail',
     template: `
-
-    <mat-card class="mag" fxFlex="0 0 97%">
+    <mat-card fxFlex="390px" class="card1">
     <div [routerLink] ="['/evento', event.id]">
     <h2 class="title2"> {{event?.name }}</h2>
     <div><strong>Start Date:</strong> {{event?.startDate | date:'fullDate' }}</div>  
     <div><strong>End Date: </strong>{{event?.endDate | date }}</div>
     <div><strong>Price:</strong> \Ksh {{event?.price }}</div>
     <div><strong>Place:</strong> {{event?.places}}</div>
-    <div>{{event?.id }} </div>
     </div>
-    <button [routerLink] ="['/edit', event.id]">Edit</button> 
     </mat-card>
     `,
     styles: [` 
@@ -28,23 +25,22 @@ import { IEvento, ISession } from './shared/evento-model';
       color: #e91e63 !important;}  
      .bold {
          font-weight: bold;}
-     .mag {
-       
-        min-height: 235px;
-        max-height: 250px;
-        overflow: hidden;
-        margin-bottom: 20px;
-     }
      .title2 {
         font-size: 1.1em;
      }
-     .mat-card:first-child
-     {
-        margin-left: 10px;
+     mat-card{
+         margin: 10px;
      }
-     .mat-card {
-        max-width: 295px !important;
-     }
+     .card1 {
+        max-width: 25%;
+        height: 100%; 
+        height: 260px;
+        min-height: 100%; 
+        min-width: 100%; 
+        width: 100%; 
+       
+      }
+
     `]
 })
    

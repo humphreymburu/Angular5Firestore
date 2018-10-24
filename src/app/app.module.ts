@@ -4,6 +4,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreService } from '../fire.service';
+import { AgmCoreModule } from '@agm/core';
+
 
 
 import 'hammerjs';
@@ -38,7 +40,8 @@ import {CdkTableModule} from '@angular/cdk/table';
 import { EventoModule } from './+evento/evento.module';
 import { ProfileModule } from './+users/profile.module';
 import { AuthService } from './+users/auth.service';
-
+import { SimpleModalDiag, SimpleDialog } from './+evento/simple-modal-dialog';
+import { GooglePlacesDirective } from './+evento/google-places.directive';
 
 //import { JQ_TOKEN, JQUERY_PROVIDER, ModalTriggerDirective } from './common/index';
 
@@ -105,11 +108,13 @@ type StoreType = {
     AboutComponent,
     HomeComponent,
     NoContentComponent,
-    XLargeDirective
+    XLargeDirective,
+    SimpleDialog
   ],
 
   entryComponents: [
-    AppComponent
+    AppComponent,
+    SimpleDialog
   ],
     
   
@@ -151,6 +156,10 @@ type StoreType = {
     EventoModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAw_rteBzAoteFSNyyjeiXehZGE4fDNe7o',
+      libraries: ["places"]
+    }),
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(ROUTES, {
       useHash: Boolean(history.pushState) === false,
@@ -162,11 +171,16 @@ type StoreType = {
   /**
    * Expose our Services and Providers into Angular's dependency injection.
    */
+
+
+  
+
   providers: [
     ENV_PROVIDERS,
     APP_PROVIDERS,
     AuthService,
-    NotifyService
+    NotifyService,
+    SimpleModalDiag
   ]
 })
 export class AppModule {

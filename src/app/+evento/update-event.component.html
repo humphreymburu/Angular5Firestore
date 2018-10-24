@@ -3,17 +3,12 @@
     <hr>
 
 <div fxLayout="row" fxLayoutAlign="center center" *ngIf="event">
-
-            
-            
 <mat-card fxFlex="66.66%">
-
 <mat-card-content>
-
-
 <mat-card-header>
 <mat-card-title><h2>Update Event Details</h2></mat-card-title>
 </mat-card-header>
+
 
 <form autocomplete="off" novalidate (ngSubmit)="updateEvento(event)">
 
@@ -31,7 +26,7 @@
     
     <div fxFlex="100">
     <mat-form-field fxFill>
-    <input matInput required id="name" type="text"  maxlength="75" [(ngModel)]="event.places" name="places"  placeholder="Places">
+    <input matInput required id="name" type="search" maxlength="75" [(ngModel)]="event.places" name="places"  placeholder="Places">
     </mat-form-field>
     </div>
 
@@ -73,11 +68,18 @@
 
     <div fxLayout="row" fxLayoutWrap  fxLayoutAlign="start start">
     <button mat-raised-button color="primary" type="submit">UPDATE EVENT</button>
+    <br/>
+    <button mat-raised-button color="accent" type="submit" (click)="deleteEvento(event)" fxFlexOffset="20px">DELETE EVENT</button>
+</div>
     </div>
-    </div>
+
+
     </form>
   
 <p>{{event.name }}</p>
+
+
+  
 </mat-card-content>
 </mat-card> 
 <br/>
@@ -85,3 +87,5 @@
 </div>
 <br/>
 <br/>
+
+

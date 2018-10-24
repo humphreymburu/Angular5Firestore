@@ -54,12 +54,6 @@ export class EventoDetailComponent implements OnInit {
                 console.log(this.id);
                 this.event = this.eventService.getEvent(this.id);
         }
-        
-
-            
-        
-    
-
-          
+               
 
 }
