@@ -9,6 +9,10 @@ import { MatInputModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
 import { MatDatepickerModule} from '@angular/material';
 import { MatTabsModule } from '@angular/material';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import {MatIconModule} from '@angular/material/icon';
+
+
 
 import { EventoComponent } from './evento.component';
 import { UpdateComponent } from './update-event.component';
@@ -26,6 +30,8 @@ import { DurationPipe } from './shared/duration.pipe';
 import { UpVoteComponent }  from './+evento-detail/upvote.component';
 import { VoterService }  from '../+evento/+evento-detail/voter.services';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { FileSizePipe }  from './file-size-pipe';
+import { DropZoneDirective } from './drop-zone-directive';
 
 
 console.log('`Event and Detail` bundle loaded asynchronously');
@@ -42,11 +48,14 @@ console.log('`Event and Detail` bundle loaded asynchronously');
     CollapsibleWellComponent,
     SessionListComponent,
     DurationPipe,
+    FileSizePipe, 
+    DropZoneDirective,
     UpVoteComponent,
     UpdateComponent
   ],
   imports: [
     CommonModule,
+    MatIconModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -56,9 +65,10 @@ console.log('`Event and Detail` bundle loaded asynchronously');
     MatDatepickerModule,
     MatTabsModule,
     MaterialModule,
-    EventoRoutingModule
+    EventoRoutingModule,
+    MaterialFileInputModule
   ],
-  providers: [ EventoService,  
+  providers: [ EventoService,
     VoterService, EventoRouteActivator, EventoListResolver ]
 })
 

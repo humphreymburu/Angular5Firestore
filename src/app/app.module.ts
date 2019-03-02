@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FirestoreService } from '../fire.service';
 import { AgmCoreModule } from '@agm/core';
 
@@ -156,6 +157,7 @@ type StoreType = {
     EventoModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAw_rteBzAoteFSNyyjeiXehZGE4fDNe7o',
       libraries: ["places"]

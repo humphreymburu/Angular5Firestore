@@ -151,9 +151,11 @@ module.exports = function(options) {
         {
           test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
           use: 'file-loader'
-        }
+        }, 
       ]
     },
+
+    
 
     /**
      * Add additional plugins to the compiler.
@@ -161,6 +163,7 @@ module.exports = function(options) {
      * See: https://webpack.js.org/configuration/plugins/
      */
     plugins: [
+
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.

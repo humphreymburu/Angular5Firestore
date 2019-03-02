@@ -7,11 +7,12 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 
 //import { Subject } from 'rxjs/RX';
 //import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, finalize, tap } from 'rxjs/operators';
 import { IEvento, ISession } from './shared/evento-model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapsAPILoader } from '@agm/core';
 
@@ -25,14 +26,13 @@ export class EventoService {
   ext: string = ".json";
 
 
-
   private eventsCollection: AngularFirestoreCollection<IEvento>;
   private eventDoc: AngularFirestoreDocument<IEvento>;
   events: Observable<IEvento[]>;
   event:  Observable<any>;
+  fileSize: any;
   
-  
-  constructor(private afs: AngularFirestore, http: HttpClient, private loader: MapsAPILoader, zone: NgZone ) {
+  constructor(private afs: AngularFirestore, http: HttpClient, private loader: MapsAPILoader, zone: NgZone, private storage: AngularFireStorage) {
     this.eventsCollection = afs.collection<IEvento>('Events', ref => ref.orderBy('startDate', 'desc'));
     //this.events = this.eventsCollection.valueChanges();
     
@@ -102,7 +102,7 @@ export class EventoService {
   }
 
    
-
+  
 
 
 
@@ -147,7 +147,6 @@ export class EventoService {
       }, 100);
      return emitter;
   }
-
 
 
   
