@@ -1,0 +1,88 @@
+
+<h1>Update Your Event</h1>
+    <hr>
+
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="event">
+<mat-card fxFlex="66.66%">
+<mat-card-content>
+<mat-card-header>
+<mat-card-title><h2>Update Event Details</h2></mat-card-title>
+</mat-card-header>
+
+
+<form autocomplete="off" novalidate (ngSubmit)="updateEvento(event)">
+
+    <div fxLayout="column" fxLayoutAlign="space-between stretch">
+    
+    <div fxFlex="100">
+    
+    <mat-form-field fxFill>
+    <input matInput required id="name" type="text"  maxlength="75" [(ngModel)]="event.name" name="name"  placeholder="Event Name">
+    </mat-form-field>
+    </div>
+    
+    <div fxFlex="100">
+    <mat-form-field fxFill>
+    <input matInput required id="name" type="search" maxlength="75" [(ngModel)]="event.places" name="places"  placeholder="Places">
+    </mat-form-field>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutWrap  fxLayoutAlign="start stretch">
+        <mat-form-field>
+        <input matInput [matDatepicker]="picker"  [(ngModel)]= "event.startDate" name="startDate" required id="startDate"  placeholder="Start Date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker></mat-datepicker>
+
+      </mat-form-field>
+      
+      <mat-form-field fxFlexOffset="20px">
+        <input matInput [matDatepicker]="picker2" [(ngModel)]= "event.endDate" name="endDate" required id="endDate" placeholder="End Date">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker2></mat-datepicker>
+      </mat-form-field>
+      
+      </div>
+    
+      <mat-form-field>
+        <input matInput [(ngModel)]= "event.price"  name="price" id="eventPrice" type="number"  maxlength="5" placeholder="Price">
+        </mat-form-field>
+        
+        <mat-form-field fxFill>
+        <input matInput [(ngModel)]="event.imageUrl" name="imageUrl" required id="imageUrl" type="text"  maxlength="255" placeholder="Photo URL">
+        </mat-form-field>
+        
+        
+        <br/>
+        <mat-form-field fxFill>
+            <textarea matInput [(ngModel)]="event.desc" maxlength="256" placeholder="Event Description" name="desc"></textarea>
+            <mat-hint align="start"><strong>Max Words 256</strong> </mat-hint>
+          </mat-form-field>
+        
+       <br/>
+       <br/>
+
+
+    <div fxLayout="row" fxLayoutWrap  fxLayoutAlign="start start">
+    <button mat-raised-button color="primary" type="submit">UPDATE EVENT</button>
+    <br/>
+    <button mat-raised-button color="accent" type="submit" (click)="deleteEvento(event)" fxFlexOffset="20px">DELETE EVENT</button>
+</div>
+    </div>
+
+
+    </form>
+  
+<p>{{event.name }}</p>
+
+
+  
+</mat-card-content>
+</mat-card> 
+<br/>
+<br/>
+</div>
+<br/>
+<br/>
+
+

@@ -78,6 +78,6 @@ export const environment = {
     authDomain: 'tukio-1cb4e.firebaseapp.com',
     databaseURL: 'https://tukio-1cb4e.firebaseio.com',
     projectId: 'tukio-1cb4e',
-    storageBucket: '641229721325'
+    storageBucket: "tukio-1cb4e.appspot.com",
   }
 };

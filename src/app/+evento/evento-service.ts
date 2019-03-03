@@ -1,40 +1,41 @@
-import { Injectable, Input, EventEmitter, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/RX';
-import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { Injectable, Input, EventEmitter, NgZone } from '@angular/core';
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
+//import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
+
+//import {forkJoin} from 'rxjs'; 
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+
+//import { Subject } from 'rxjs/RX';
+//import { Observable } from 'rxjs/Observable';
+import { catchError, map, finalize, tap } from 'rxjs/operators';
 import { IEvento, ISession } from './shared/evento-model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { GoogleMapsAPIWrapper } from '@agm/core';
+import { MapsAPILoader } from '@agm/core';
+
+declare var google: any;
 
 @Injectable()
-export class EventoService implements OnInit {
+export class EventoService {
  
-  id: number | string;
+  id: string | number;
   eventoUrl: number | string;
   ext: string = ".json";
 
 
   private eventsCollection: AngularFirestoreCollection<IEvento>;
+  private eventDoc: AngularFirestoreDocument<IEvento>;
   events: Observable<IEvento[]>;
+  event:  Observable<any>;
+  fileSize: any;
   
-  constructor(private afs: AngularFirestore, http: HttpClient ) {
-    this.eventsCollection = afs.collection<IEvento>('Events');
+  constructor(private afs: AngularFirestore, http: HttpClient, private loader: MapsAPILoader, zone: NgZone, private storage: AngularFireStorage) {
+    this.eventsCollection = afs.collection<IEvento>('Events', ref => ref.orderBy('startDate', 'desc'));
     //this.events = this.eventsCollection.valueChanges();
-
-    this.events = this.eventsCollection.snapshotChanges().map(actions => {
-      return actions.map(a => {
-        const data = a.payload.doc.data() as IEvento;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      });
-    });
-
-  }
-
-  ngOnInit() {
+    
   }
 
   get timestamp() {
@@ -54,20 +55,54 @@ export class EventoService implements OnInit {
     })
   }
 
-  getEventos() {
-    
-    return this.events;
+
+  getData(): Observable<any[]> {
+    // ['added', 'modified', 'removed']
+    return this.eventsCollection.snapshotChanges().pipe(
+      map((actions) => {
+        return actions.map((a) => {
+          const data = a.payload.doc.data();
+          return { id: a.payload.doc.id, ...data };
+        });
+      })
+    );
   }
 
+
+
+
+
+
+  deleteEvent(event: IEvento) {
+    this.eventDoc = this.afs.doc(`Event/${event.id}`);
+    this.eventDoc.delete();
+  }
+
+
+  getEvents() {
+    return this.events;
+    console.log(this.events)
+  }
+
+
+  updateEvent(event: IEvento){
+    this.eventDoc = this.afs.doc(`Events/${event.id}`);
+    this.eventDoc.update(event);
+   }
+
+
   getEvent(id: string) {
-    return this.afs.doc(`Events/${id}`).snapshotChanges().map(snap => {
+    return this.afs.doc(`Events/${id}`).snapshotChanges().pipe(
+      map(snap => {
       const data = snap.payload.data() as IEvento;
       const id = snap.payload.id;
       return { id, ...data };
-    });
+    }))
+    
   }
 
-
+   
+  
 
 
 
@@ -76,7 +111,6 @@ export class EventoService implements OnInit {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-
       // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.message}`);
 
@@ -90,19 +124,6 @@ export class EventoService implements OnInit {
     //this.messageService.add('HeroService: ' + message);
   }
 
-
-  //updateEvento(event) {
-       //event.id = 999
-       //event.session = []
-       //EVENTS.push(event)
- // }
-
-  updateEvento(event: IEvento) {
-
-  }
-
-  
-  
 
 
   
@@ -128,9 +149,7 @@ export class EventoService implements OnInit {
   }
 
 
-
   
 
 
 }
-

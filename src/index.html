@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= htmlWebpackPlugin.options.title %></title>
   <meta name="description" content="<%= htmlWebpackPlugin.options.metadata.description %>">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
   <!-- base url -->
   <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
   <% if (webpackConfig.htmlElements.headTags) { %>
   <!-- Configured Head Tags  -->
   <%= webpackConfig.htmlElements.headTags %>
   <% } %>
-
 
   <%= htmlWebpackPlugin.files.webpackManifest %>
 
@@ -51,5 +52,6 @@
   </app>
 
   <!-- Scripts will be injected by webpack here -->
-</body>
+ <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw_rteBzAoteFSNyyjeiXehZGE4fDNe7o&callback=initMap"
+  type="text/javascript"></script> -->
 </html>
